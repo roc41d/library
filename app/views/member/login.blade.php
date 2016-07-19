@@ -3,7 +3,7 @@
 {{-- web site title --}}
 @section('title')
 @parent
-login
+member login
 @stop
 
 {{-- website content --}}

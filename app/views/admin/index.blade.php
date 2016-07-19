@@ -16,54 +16,39 @@ home
       </div>
     </form>
     <ul class="nav menu">
-      <li class="active"><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
+      <li class="active"><a href="{{URL::to('admin')}}"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
       <li class="parent ">
-        <a href="#">
+        <a href="{{URL::to('admin/books')}}">
           <span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked folder"><use xlink:href="#stroked-folder"/></svg></span> Manage Books 
         </a>
         <ul class="children collapse" id="sub-item-1">
           <li>
-            <a class="" href="addbook.html">
+            <a class="" href="{{URL::to('admin/addbook')}}">
               <svg class="glyph stroked plus sign"><use xlink:href="#stroked-plus-sign"/></svg> Add Book
-            </a>
-          </li>
-          <li>
-            <a class="" href="updatebook.html">
-              <svg class="glyph stroked pen tip"><use xlink:href="#stroked-pen-tip"/></svg> Update Book
             </a>
           </li>
         </ul>
       </li>
       <li class="parent ">
-        <a href="#">
+        <a href="{{URL::to('admin/students')}}">
           <span data-toggle="collapse" href="#sub-item-2"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg></span> Manage Students 
         </a>
         <ul class="children collapse" id="sub-item-2">
           <li>
-            <a class="" href="addstudent.html">
+            <a class="" href="{{URL::to('admin/addstudent')}}">
               <svg class="glyph stroked plus sign"><use xlink:href="#stroked-plus-sign"/></svg> Add Student
-            </a>
-          </li>
-          <li>
-            <a class="" href="updatestudent.html">
-              <svg class="glyph stroked pen tip"><use xlink:href="#stroked-pen-tip"/></svg> Update Student
             </a>
           </li>
         </ul>
       </li>
       <li class="parent ">
-        <a href="#">
+        <a class="" href="{{URL::to('admin/employees')}}">
           <span data-toggle="collapse" href="#sub-item-3"><svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg></span> Manage Employees
         </a>
         <ul class="children collapse" id="sub-item-3">
           <li>
-            <a class="" href="addemployee.html">
+            <a class="" href="{{URL::to('admin/addemployee')}}">
               <svg class="glyph stroked plus sign"><use xlink:href="#stroked-plus-sign"/></svg> Add Employee
-            </a>
-          </li>
-          <li>
-            <a class="" href="#">
-              <svg class="glyph stroked pen tip"><use xlink:href="#stroked-pen-tip"/></svg> Update Employee
             </a>
           </li>
         </ul>
@@ -85,7 +70,7 @@ home
               <svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>
             </div>
             <div class="col-sm-9 col-lg-7 widget-right">
-              <div class="large">xx</div>
+              <div class="large">{{$students}}</div>
               <div class="text-muted">Students</div>
             </div>
           </div>
@@ -98,7 +83,7 @@ home
               <svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>
             </div>
             <div class="col-sm-9 col-lg-7 widget-right">
-              <div class="large">xx</div>
+              <div class="large">{{$employees}}</div>
               <div class="text-muted">Employees</div>
             </div>
           </div>
@@ -111,7 +96,7 @@ home
               <svg class="glyph stroked folder"><use xlink:href="#stroked-folder"/></svg>
             </div>
             <div class="col-sm-9 col-lg-7 widget-right">
-              <div class="large">xx</div>
+              <div class="large">{{$books}}</div>
               <div class="text-muted">Books</div>
             </div>
           </div>
@@ -124,26 +109,50 @@ home
               <svg class="glyph stroked app-window-with-content"><use xlink:href="#stroked-app-window-with-content"></use></svg>
             </div>
             <div class="col-sm-9 col-lg-7 widget-right">
-              <div class="large">xx</div>
+              <div class="large">{{$request}}</div>
               <div class="text-muted">Book Requests</div>
             </div>
           </div>
         </div>
       </div>
     </div><!--/.row-->
-    
     <div class="row">
       <div class="col-lg-12">
         <div class="panel panel-default">
-          <div class="panel-heading">Site Traffic Overview</div>
+          <div class="panel-heading">Books Request</div>
           <div class="panel-body">
-            <div class="canvas-wrapper">
-              <canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
-            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Member Name</th>
+                        <th>Book Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($requests as $r)
+                    <tr>
+                        <td>{{Member::find($r->member_id)->fname}} {{Member::find($r->member_id)->lname}}</td>
+                        <th>{{Book::find($r->book_id)->bk_title}}</th>
+                        <td>
+                          @if($r->type == "borrow")
+                          <a href="{{URL::to('admin/bookaccept/'. $r->id)}}" class="btn btn-sm btn-primary"> Accept</a>
+                          <a href="{{URL::to('admin/bookreject/'. $r->id)}}" class="btn btn-sm btn-danger"> Reject</a>
+                          @else
+                          <a href="{{URL::to('admin/reserveaccept/'. $r->id)}}" class="btn btn-sm btn-primary"> Accept</a>
+                          <a href="{{URL::to('admin/reservereject/'. $r->id)}}" class="btn btn-sm btn-danger">Reject</a>
+                          @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </div><!--/.row-->    
+    </div><!--/.row-->
+    
+    
   </div>  <!--/.main-->
 
 @stop

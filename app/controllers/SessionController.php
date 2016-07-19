@@ -3,16 +3,17 @@
 class SessionController extends BaseController {
 
 	// function for displaying login form
-	public function login() {	
+	/*public function login() {	
 
 		return View::make('site.login');
 	}
+	*/
 
 	// function for handling userLogin
 	public function handleLogin() {
 		if (Auth::attempt(array('username' => Input::get('username'), 'password' => Input::get('password'))))
 		{
-			return "admin home.";
+			return Redirect::to('admin');
 
 		}
 

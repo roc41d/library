@@ -12,13 +12,28 @@
 */
 Route::get('/', function()
 {
-	return View::make('site.login');
+	return View::make('site.home');
 
 });
 
-Route::get('admin', function()
+Route::get('/admin-login', function()
 {
-	return View::make('admin.addstudent');
+	return View::make('admin.login');
+
+});
+
+Route::get('/member-login', function()
+{
+    return View::make('member.login');
+
+});
+
+Route::get('/test', function()
+{
+    $data = date("d") + 3;
+
+
+    return $data;
 
 });
 
@@ -31,15 +46,17 @@ Route::get('admin', function()
     |
     */
 Route::get('logout', 'SessionController@logout');
-Route::get('login', 'SessionController@login');
+//Route::get('login', 'SessionController@login');
 Route::post('login', 'SessionController@handleLogin')->before('csrf');
 Route::get('register', 'SessionController@register');
 Route::post('register', 'SessionController@handleRegister')->before('csrf');
 
-/*Route::group(array('before' => 'auth'), function(){
+Route::group(array('before' => 'auth'), function(){
 
     Route::controller('admin', 'AdminController');
 
 });
-*/
+
+Route::controller('member', 'MemberController');
+
 
