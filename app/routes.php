@@ -16,6 +16,12 @@ Route::get('/', function()
 
 });
 
+Route::get('admin', function()
+{
+	return View::make('admin.addstudent');
+
+});
+
 /*
     |--------------------------------------------------------------------------
     | Session Controller Routes
